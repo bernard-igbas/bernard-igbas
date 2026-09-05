@@ -1,0 +1,304 @@
+<!--
+  VERSION : v1 - 05/09/2026
+  Cumule :
+    - v1 : reprise du contenu existant, migration vers dépôt GitHub, liens
+      des tuiles lus depuis liens-igbas.json (liste centrale d'adresses),
+      suppression de la tuile "Campagne IGBas" (appli supprimée le 05/09/2026)
+  Fichiers precedents : b87df30a.bernard-igbas.pages.dev.html
+-->
+<meta name="app-version" content="v1-2026-09-05">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bernard — IGBas®</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bernard">
+<link rel="apple-touch-icon" href="icon.jpg">
+<meta name="theme-color" content="#085041">
+<style>
+#pin-screen{position:fixed;inset:0;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:28px;}
+#pin-screen.hidden{display:none;}
+.pin-logo{font-size:56px;}
+.pin-titre{font-size:28px;font-weight:900;color:#fff;}
+.pin-sous{font-size:18px;color:#9ed0b8;}
+.pin-dots{display:flex;gap:16px;margin:8px 0;}
+.pin-dot{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.3);transition:all 0.2s;}
+.pin-dot.filled{background:#1D9E75;border-color:#1D9E75;}
+.pin-erreur{font-size:16px;color:#e05252;height:20px;font-weight:600;}
+.pin-clavier{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:280px;}
+.pin-btn{background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.12);border-radius:16px;color:#fff;font-size:26px;font-weight:700;font-family:'Outfit',sans-serif;padding:18px;cursor:pointer;transition:all 0.15s;}
+.pin-btn:hover{background:rgba(255,255,255,0.15);}
+.pin-btn:active{transform:scale(0.93);background:#1D9E75;}
+.pin-btn.del{font-size:20px;color:#9ed0b8;}
+.pin-btn.vide{background:none;border:none;cursor:default;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0a1628;--navy2:#0f2035;--teal:#1D9E75;--vert:#085041;
+  --or:#BA7517;--or-light:#fdf3e3;--teal-light:#eaf6f0;
+  --rouge:#c0392b;--violet:#6c3483;
+  --text:#1a1a18;--text2:#5a6370;
+}
+html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy);}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,var(--navy2),#0d2a1a);color:#fff;text-align:center;padding:36px 24px 28px;border-bottom:3px solid var(--teal);}
+.header-salut{font-size:20px;color:#9ed0b8;font-weight:400;margin-bottom:6px;letter-spacing:1px;}
+.header-nom{font-size:48px;font-weight:900;letter-spacing:1px;margin-bottom:4px;}
+.header-sub{font-size:20px;color:#9ed0b8;font-weight:400;}
+.header-time{font-size:28px;font-weight:700;color:#4ecb8d;margin-top:12px;letter-spacing:2px;}
+
+/* SECTION TITRE */
+.section-titre{font-size:14px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:3px;text-transform:uppercase;padding:24px 24px 10px;max-width:700px;margin:0 auto;}
+
+/* GRILLE */
+.grille{display:flex;flex-direction:column;gap:16px;padding:0 24px 16px;max-width:700px;margin:0 auto;}
+
+/* TUILE */
+.tuile{display:flex;align-items:center;gap:22px;border-radius:20px;padding:24px 28px;cursor:pointer;text-decoration:none;border:2px solid rgba(255,255,255,0.08);transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.tuile:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.2);}
+.tuile:active{transform:scale(0.98);}
+.tuile.vert{background:linear-gradient(135deg,#0d3320,#0a2518);}
+.tuile.navy{background:linear-gradient(135deg,#0f2035,#0a1628);}
+.tuile.or{background:linear-gradient(135deg,#2a1a00,#1a1000);}
+.tuile.violet{background:linear-gradient(135deg,#1a0a2a,#120718);}
+.tuile.rouge{background:linear-gradient(135deg,#2a0a0a,#1a0505);}
+
+.tuile-icone{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
+.tuile.vert .tuile-icone{background:rgba(29,158,117,0.2);}
+.tuile.navy .tuile-icone{background:rgba(78,144,203,0.2);}
+.tuile.or .tuile-icone{background:rgba(186,117,23,0.25);}
+.tuile.violet .tuile-icone{background:rgba(108,52,131,0.3);}
+.tuile.rouge .tuile-icone{background:rgba(192,57,43,0.2);}
+
+.tuile-texte{flex:1;}
+.tuile-titre{font-size:26px;font-weight:900;color:#fff;margin-bottom:3px;}
+.tuile-desc{font-size:18px;color:rgba(255,255,255,0.55);line-height:1.5;}
+.tuile-arrow{font-size:28px;color:rgba(255,255,255,0.25);flex-shrink:0;}
+.tuile.vert .tuile-arrow{color:#1D9E75;}
+.tuile.navy .tuile-arrow{color:#4ecb8d;}
+.tuile.or .tuile-arrow{color:#BA7517;}
+.tuile.violet .tuile-arrow{color:#9b59b6;}
+.tuile.rouge .tuile-arrow{color:#e74c3c;}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 24px 48px;color:rgba(255,255,255,0.3);font-size:15px;}
+.footer a{color:#4ecb8d;font-weight:700;text-decoration:none;}
+
+@media(max-width:500px){
+  .header-nom{font-size:36px;}
+  .tuile{padding:18px 18px;gap:16px;}
+  .tuile-icone{width:58px;height:58px;font-size:28px;border-radius:14px;}
+  .tuile-titre{font-size:22px;}
+  .tuile-desc{font-size:16px;}
+  .grille{padding:0 16px 16px;}
+}
+</style>
+
+<div id="pin-screen">
+  <div class="pin-logo">🌿</div>
+  <div class="pin-titre">Bernard</div>
+  <div class="pin-sous">Méthode 3+1 à IGBas®</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-erreur" id="pin-erreur"></div>
+  <div class="pin-clavier">
+    <button class="pin-btn" onclick="pinSaisir('1')">1</button>
+    <button class="pin-btn" onclick="pinSaisir('2')">2</button>
+    <button class="pin-btn" onclick="pinSaisir('3')">3</button>
+    <button class="pin-btn" onclick="pinSaisir('4')">4</button>
+    <button class="pin-btn" onclick="pinSaisir('5')">5</button>
+    <button class="pin-btn" onclick="pinSaisir('6')">6</button>
+    <button class="pin-btn" onclick="pinSaisir('7')">7</button>
+    <button class="pin-btn" onclick="pinSaisir('8')">8</button>
+    <button class="pin-btn" onclick="pinSaisir('9')">9</button>
+    <button class="pin-btn vide"></button>
+    <button class="pin-btn" onclick="pinSaisir('0')">0</button>
+    <button class="pin-btn del" onclick="pinEffacer()">⌫</button>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-salut">Bonjour 🌿</div>
+  <div class="header-nom">Bernard</div>
+  <div class="header-sub">Méthode 3+1 à IGBas®</div>
+  <div class="header-time" id="clock">--:--</div>
+</div>
+
+<!-- CLIENTS & SUIVI -->
+<div class="section-titre">Clients & Suivi</div>
+<div class="grille">
+  <a class="tuile vert" data-app="rdv_public" href="https://rdv-site-info-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">📅</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Agenda RDV</div>
+      <div class="tuile-desc">Visiteurs, clients, rendez-vous</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile vert" data-app="rdv_coaching" href="https://rdv-coaching-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">👥</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Suivi Clients</div>
+      <div class="tuile-desc">Fiches, mesures, bilans</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile vert" data-app="docs" href="https://docs-coaching-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">📦</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Documents Clients</div>
+      <div class="tuile-desc">Déclic · Cap Équilibre · Liberté Totale</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
+<!-- CAMPAGNE & SITE -->
+<div class="section-titre">Campagne & Site</div>
+<div class="grille">
+  <a class="tuile navy" href="https://www.methode-igbas.fr" target="_blank">
+    <div class="tuile-icone">🌐</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Site IGBas®</div>
+      <div class="tuile-desc">methode-igbas.fr</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile navy" data-app="quiz" href="https://quiz-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">🎯</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Quiz Profil</div>
+      <div class="tuile-desc">Outil de qualification</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
+<!-- GESTION -->
+<div class="section-titre">Gestion</div>
+<div class="grille">
+  <a class="tuile or" data-app="compta" href="https://compta-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">💰</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Comptabilité</div>
+      <div class="tuile-desc">ML & Bernard — foyer</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile or" href="https://dashboard.stripe.com" target="_blank">
+    <div class="tuile-icone">💳</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Stripe</div>
+      <div class="tuile-desc">Paiements & ventes</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile or" href="https://app.brevo.com" target="_blank">
+    <div class="tuile-icone">📧</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Brevo</div>
+      <div class="tuile-desc">Emails & contacts</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
+<!-- TECHNIQUE -->
+<div class="section-titre">Technique</div>
+<div class="grille">
+  <a class="tuile violet" href="https://dash.cloudflare.com" target="_blank">
+    <div class="tuile-icone">⚡</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Cloudflare</div>
+      <div class="tuile-desc">Toutes les apps</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile violet" data-app="dashboard" href="https://dashboard-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">🖥️</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Dashboard Technique</div>
+      <div class="tuile-desc">Liens, couleurs, codes CSS</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
+<!-- ML -->
+<div class="section-titre">Marie-Laure</div>
+<div class="grille" style="padding-bottom:8px;">
+  <a class="tuile rouge" data-app="ml" href="https://ml-igbas-7k1.pages.dev" target="_blank">
+    <div class="tuile-icone">🌿</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Dashboard Marie-Laure</div>
+      <div class="tuile-desc">Son espace simplifié</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
+<div class="footer">
+  IGBas® &nbsp;·&nbsp; <a data-app="dashboard" href="https://dashboard-igbas.pages.dev">Dashboard technique →</a>
+  <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:10px;">bernard-igbas — v1 — 05/09/2026 — Validé par Bernard : EN ATTENTE</div>
+</div>
+
+<script>
+function tick(){
+  var now=new Date();
+  var h=now.getHours().toString().padStart(2,'0');
+  var m=now.getMinutes().toString().padStart(2,'0');
+  document.getElementById('clock').textContent=h+':'+m;
+}
+setInterval(tick,10000); tick();
+
+// PIN
+var PIN_CODE = '0903';
+var pinSaisi = '';
+var pinOk = localStorage.getItem('bernard_pin_ok');
+if(pinOk === 'true'){ document.getElementById('pin-screen').classList.add('hidden'); }
+
+function pinSaisir(c){
+  if(pinSaisi.length >= 4) return;
+  pinSaisi += c;
+  document.getElementById('d'+(pinSaisi.length-1)).classList.add('filled');
+  if(pinSaisi.length === 4){
+    setTimeout(function(){
+      if(pinSaisi === PIN_CODE){
+        localStorage.setItem('bernard_pin_ok','true');
+        document.getElementById('pin-screen').classList.add('hidden');
+      } else {
+        document.getElementById('pin-erreur').textContent = 'Code incorrect — réessayez';
+        pinSaisi = '';
+        for(var i=0;i<4;i++) document.getElementById('d'+i).classList.remove('filled');
+        setTimeout(function(){ document.getElementById('pin-erreur').textContent=''; },2000);
+      }
+    },200);
+  }
+}
+
+function pinEffacer(){
+  if(pinSaisi.length === 0) return;
+  pinSaisi = pinSaisi.slice(0,-1);
+  document.getElementById('d'+pinSaisi.length).classList.remove('filled');
+}
+</script>
+
+<script>
+fetch('https://liens-igbas.pages.dev/liens-igbas.json')
+  .then(function(r){ return r.json(); })
+  .then(function(liens){
+    document.querySelectorAll('[data-app]').forEach(function(el){
+      var cle = el.getAttribute('data-app');
+      if(liens[cle]){ el.setAttribute('href', liens[cle]); }
+    });
+  })
+  .catch(function(){ /* adresses de secours déjà en place */ });
+</script>
