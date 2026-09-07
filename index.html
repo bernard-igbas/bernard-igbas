@@ -1,12 +1,15 @@
 <!--
-  VERSION : v1 - 05/09/2026
+  VERSION : v2 - 07/09/2026
   Cumule :
     - v1 : reprise du contenu existant, migration vers dépôt GitHub, liens
       des tuiles lus depuis liens-igbas.json (liste centrale d'adresses),
       suppression de la tuile "Campagne IGBas" (appli supprimée le 05/09/2026)
-  Fichiers precedents : b87df30a.bernard-igbas.pages.dev.html
+    - v2 : ajout de la section "Recettes & Alimentation" (Recettes-IGBas, Aliments & IG) ;
+      ajout de la tuile "Notre Histoire" dans "Campagne & Site" ; mise à jour du lien
+      Quiz Profil vers sa nouvelle adresse GitHub (quiz-igbas-1il.pages.dev)
+  Fichiers precedents : b87df30a.bernard-igbas.pages.dev.html, v1 (05/09/2026)
 -->
-<meta name="app-version" content="v1-2026-09-05">
+<meta name="app-version" content="v2-2026-09-07">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bernard — IGBas®</title>
@@ -66,6 +69,7 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
 .tuile.or{background:linear-gradient(135deg,#2a1a00,#1a1000);}
 .tuile.violet{background:linear-gradient(135deg,#1a0a2a,#120718);}
 .tuile.rouge{background:linear-gradient(135deg,#2a0a0a,#1a0505);}
+.tuile.emeraude{background:linear-gradient(135deg,#0a2e28,#071f1c);}
 
 .tuile-icone{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
 .tuile.vert .tuile-icone{background:rgba(29,158,117,0.2);}
@@ -73,6 +77,7 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
 .tuile.or .tuile-icone{background:rgba(186,117,23,0.25);}
 .tuile.violet .tuile-icone{background:rgba(108,52,131,0.3);}
 .tuile.rouge .tuile-icone{background:rgba(192,57,43,0.2);}
+.tuile.emeraude .tuile-icone{background:rgba(45,158,133,0.25);}
 
 .tuile-texte{flex:1;}
 .tuile-titre{font-size:26px;font-weight:900;color:#fff;margin-bottom:3px;}
@@ -83,6 +88,7 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
 .tuile.or .tuile-arrow{color:#BA7517;}
 .tuile.violet .tuile-arrow{color:#9b59b6;}
 .tuile.rouge .tuile-arrow{color:#e74c3c;}
+.tuile.emeraude .tuile-arrow{color:#4ecb8d;}
 
 /* FOOTER */
 .footer{text-align:center;padding:24px 24px 48px;color:rgba(255,255,255,0.3);font-size:15px;}
@@ -161,6 +167,27 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
   </a>
 </div>
 
+<!-- RECETTES & ALIMENTATION -->
+<div class="section-titre">Recettes & Alimentation</div>
+<div class="grille">
+  <a class="tuile emeraude" data-app="recettes" href="https://recettes-igbas.pages.dev" target="_blank">
+    <div class="tuile-icone">🍽️</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Recettes-IGBas</div>
+      <div class="tuile-desc">Catalogue, saisie, import PDF</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile emeraude" data-app="aliments_ig" href="https://recettes-igbas.pages.dev/gestion-aliments-ig" target="_blank">
+    <div class="tuile-icone">🥗</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Aliments &amp; IG</div>
+      <div class="tuile-desc">Gestion collective avec Marie-Laure</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+</div>
+
 <!-- CAMPAGNE & SITE -->
 <div class="section-titre">Campagne & Site</div>
 <div class="grille">
@@ -172,11 +199,19 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
     </div>
     <div class="tuile-arrow">→</div>
   </a>
-  <a class="tuile navy" data-app="quiz" href="https://quiz-igbas.pages.dev" target="_blank">
+  <a class="tuile navy" data-app="quiz" href="https://quiz-igbas-1il.pages.dev" target="_blank">
     <div class="tuile-icone">🎯</div>
     <div class="tuile-texte">
       <div class="tuile-titre">Quiz Profil</div>
       <div class="tuile-desc">Outil de qualification</div>
+    </div>
+    <div class="tuile-arrow">→</div>
+  </a>
+  <a class="tuile navy" data-app="histoire" href="https://notre-histoire-igbas-ds7.pages.dev" target="_blank">
+    <div class="tuile-icone">📖</div>
+    <div class="tuile-texte">
+      <div class="tuile-titre">Notre Histoire</div>
+      <div class="tuile-desc">Page statique</div>
     </div>
     <div class="tuile-arrow">→</div>
   </a>
@@ -247,7 +282,7 @@ html,body{min-height:100%;font-family:'Outfit',sans-serif;background:var(--navy)
 
 <div class="footer">
   IGBas® &nbsp;·&nbsp; <a data-app="dashboard" href="https://dashboard-igbas.pages.dev">Dashboard technique →</a>
-  <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:10px;">bernard-igbas — v1 — 05/09/2026 — Validé par Bernard : EN ATTENTE</div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:10px;">bernard-igbas — v2 — 07/09/2026 — Validé par Bernard : EN ATTENTE</div>
 </div>
 
 <script>
